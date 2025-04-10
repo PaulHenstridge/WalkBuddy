@@ -5,6 +5,14 @@ import jakarta.persistence.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+
+@Data // Generates getters, setters, toString, equals, and hashCode
+@NoArgsConstructor // Default constructor
+@AllArgsConstructor // Parameterized constructor
 @Entity
 public class Location {
     private String name;

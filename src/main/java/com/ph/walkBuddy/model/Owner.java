@@ -5,9 +5,15 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 
-    @Entity
-    public class Owner {
+@Data // Generates getters, setters, toString, equals, and hashCode
+@NoArgsConstructor // Default constructor
+@AllArgsConstructor // Parameterized constructor
+@Entity
+public class Owner {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
@@ -20,5 +26,6 @@ import java.util.List;
         private List<Dog> dogs = new ArrayList<>();
 
         private String notes;
+
     }
 
