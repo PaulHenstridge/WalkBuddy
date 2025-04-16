@@ -22,7 +22,7 @@ public class Owner {
         @Embedded
         private ContactDetails contactDetails;
 
-        @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL)
+        @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
         private List<Dog> dogs = new ArrayList<>();
 
         private String notes;

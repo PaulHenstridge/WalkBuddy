@@ -19,7 +19,11 @@ public class Walk {
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
         private LocalDateTime dateTime;
+
+        @ManyToOne
+        @JoinColumn(name = "location_id")
         private Location location;
+
         @ManyToMany
         @JoinTable(
                 name = "walk_dogs",
@@ -28,6 +32,12 @@ public class Walk {
         )
         private List<Dog> dogs = new ArrayList<>();
 
-        private Rating rating;
-        private Report report;
+        @OneToOne(mappedBy = "walk", cascade = CascadeType.ALL)
+        @JoinColumn(name = "rating_id")
+        private WalkRating rating;
+
+
+        @OneToOne(mappedBy = "walk", cascade = CascadeType.ALL)
+        @JoinColumn(name = "report_id")
+        private DogReport report;
 }

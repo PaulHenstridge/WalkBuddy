@@ -32,10 +32,10 @@ public class Dog {
     private List<Walk> walks = new ArrayList<>();
 
     @OneToMany(mappedBy = "dog", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Rating> ratings = new ArrayList<>();
+    private List<DogRating> dogRatings = new ArrayList<>();
 
     @OneToMany(mappedBy = "dog", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Report> reports = new ArrayList<>();
+    private List<DogReport> dogReports = new ArrayList<>();
 
     private String notes;
 

@@ -50,11 +50,13 @@ public class OwnerController {
         ownerService.deleteOwner(id);
     }
 
+    // Add a dog
     @PostMapping("/owners/{ownerId}/dogs")
     public Owner addDog(@PathVariable Long ownerId, @RequestBody Dog newDog) {
         return ownerService.addDogToOwner(ownerId, newDog);
     }
 
+    // Remove a dog
     @DeleteMapping("/owners/{ownerId}/dogs/{dogId}")
     public Owner removeDog(@PathVariable Long ownerId, @PathVariable Long dogId) {
         return ownerService.removeDogFromOwner(ownerId, dogId);
