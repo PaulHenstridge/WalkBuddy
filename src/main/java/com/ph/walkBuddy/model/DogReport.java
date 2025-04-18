@@ -16,7 +16,6 @@ public class DogReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private DogRating rating;
 
     private LocalDateTime createdAt;
 

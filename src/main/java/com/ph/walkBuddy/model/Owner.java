@@ -5,13 +5,7 @@ import jakarta.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
 
-@Data // Generates getters, setters, toString, equals, and hashCode
-@NoArgsConstructor // Default constructor
-@AllArgsConstructor // Parameterized constructor
 @Entity
 public class Owner {
         @Id
@@ -27,5 +21,62 @@ public class Owner {
 
         private String notes;
 
-    }
+        public Owner() {}
+
+        public Owner(String name, ContactDetails contactDetails, String notes) {
+                this.name = name;
+                this.contactDetails = contactDetails;
+                this.notes = notes;
+        }
+
+        // --- Getters and Setters ---
+
+        public Long getId() {
+                return id;
+        }
+
+        public String getName() {
+                return name;
+        }
+
+        public void setName(String name) {
+                this.name = name;
+        }
+
+        public ContactDetails getContactDetails() {
+                return contactDetails;
+        }
+
+        public void setContactDetails(ContactDetails contactDetails) {
+                this.contactDetails = contactDetails;
+        }
+
+        public List<Dog> getDogs() {
+                return dogs;
+        }
+
+        public void setDogs(List<Dog> dogs) {
+                this.dogs = dogs;
+        }
+
+        public String getNotes() {
+                return notes;
+        }
+
+        public void setNotes(String notes) {
+                this.notes = notes;
+        }
+
+        @Override
+        public String toString() {
+                return "Owner{" +
+                        "id=" + id +
+                        ", name='" + name + '\'' +
+                        ", contactDetails=" + contactDetails +
+                        ", notes='" + notes + '\'' +
+                        '}';
+        }
+}
+
+
 

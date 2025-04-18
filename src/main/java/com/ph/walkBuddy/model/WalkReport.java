@@ -16,7 +16,6 @@ public class WalkReport {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private WalkRating rating;
 
     private LocalDateTime createdAt;
 

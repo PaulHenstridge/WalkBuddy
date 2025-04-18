@@ -1,6 +1,7 @@
 package com.ph.walkBuddy.service;
 
 import com.ph.walkBuddy.model.Dog;
+
 import com.ph.walkBuddy.model.Owner;
 import com.ph.walkBuddy.repository.OwnerRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -66,7 +67,6 @@ public class OwnerService {
 
         return ownerRepository.save(owner);
     }
-
 
 
     // Delete owner
