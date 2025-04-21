@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/owners")
+@RequestMapping("/locations")
 public class LocationController {
 
     private final LocationService locationService;

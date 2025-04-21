@@ -42,7 +42,6 @@ public class DogService {
         existingDog.setDescription(updatedDog.getDescription());
         existingDog.setNotes(updatedDog.getNotes());
 
-        // Optional: update owner or walks if needed
 
         return dogRepository.save(existingDog);
     }
