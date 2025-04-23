@@ -25,7 +25,7 @@ public class LocationController {
 
     // GET /locations - retrieve all
     @GetMapping
-    public List<Location> getAllOwners() {
+    public List<Location> getAllLocations() {
         return locationService.getAllLocations();
     }
 
