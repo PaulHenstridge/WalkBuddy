@@ -1,10 +1,11 @@
 package com.ph.walkBuddy;
 
-import com.ph.walkBuddy.model.ContactDetails;
-import com.ph.walkBuddy.model.Dog;
-import com.ph.walkBuddy.model.Owner;
+import com.ph.walkBuddy.enums.RatingLevel;
+import com.ph.walkBuddy.model.*;
 import com.ph.walkBuddy.repository.DogRepository;
+import com.ph.walkBuddy.repository.LocationRepository;
 import com.ph.walkBuddy.repository.OwnerRepository;
+import com.ph.walkBuddy.repository.WalkRepository;
 import com.ph.walkBuddy.service.DogService;
 import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import jakarta.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.*;
@@ -30,6 +32,11 @@ public class DogServiceTest {
 
     @Autowired
     private OwnerRepository ownerRepository;
+    @Autowired
+    private WalkRepository walkRepository;
+
+    @Autowired
+    private LocationRepository locationRepository;
 
     private Owner savedOwner;
 
@@ -114,4 +121,76 @@ public class DogServiceTest {
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessageContaining("Dog not found");
     }
+
+    // Dog Ratings and Reports
+
+    @Test
+    void testAddDogRatingWithoutWalk_success() {
+        Dog dog = new Dog("Shadow", "Husky", "Quiet", "Needs cold weather", savedOwner);
+        Dog savedDog = dogRepository.save(dog);
+        DogRating rating = new DogRating(savedDog, null, RatingLevel.GREAT);
+
+        Dog updated = dogService.addRatingToDog(savedDog.getId(), rating);
+
+        assertThat(updated.getDogRatings())
+                .extracting(DogRating::getRating)
+                .contains(RatingLevel.GREAT);    }
+
+    @Test
+    void testAddDogRatingWithWalk_success() {
+        Dog dog = new Dog("Shadow", "Husky", "Quiet", "Needs cold weather", savedOwner);
+        Dog savedDog = dogRepository.save(dog);
+
+        Location location = new Location("Park", "green.grass.sun", "A big park", "Watch out for geese");
+        Location savedLocation = locationRepository.save(location);
+
+        Walk walk = walkRepository.save(new Walk(LocalDateTime.now(), savedLocation));
+        DogRating rating = new DogRating(savedDog, walk, RatingLevel.OK);
+
+        Dog updated = dogService.addRatingToDog(savedDog.getId(), rating);
+
+        assertThat(updated.getDogRatings())
+                .extracting(DogRating::getRating)
+                .contains(RatingLevel.OK);
+
+        assertThat(updated.getDogRatings())
+                .anySatisfy(r -> assertThat(r.getWalk().getId()).isEqualTo(walk.getId()));
+    }
+
+    @Test
+    void testAddDogReportWithoutWalk_success() {
+        Dog dog = new Dog("Shadow", "Husky", "Quiet", "Needs cold weather", savedOwner);
+        Dog savedDog = dogRepository.save(dog);
+
+        DogReport report = new DogReport(savedDog, null, "Did well today.");
+
+        Dog updated = dogService.addReportToDog(savedDog.getId(), report);
+
+        assertThat(updated.getDogReports())
+                .extracting(DogReport::getNotes)
+                .contains("Did well today.");
+
+        assertThat(report.getNotes()).isEqualTo("Did well today.");
+    }
+
+    @Test
+    void testAddDogReportWithWalk_success() {
+        Dog dog = new Dog("Shadow", "Husky", "Quiet", "Needs cold weather", savedOwner);
+        Dog savedDog = dogRepository.save(dog);
+
+        Location location = new Location("Park", "green.grass.sun", "A big park", "Watch out for geese");
+        Location savedLocation = locationRepository.save(location);
+
+        Walk walk = walkRepository.save(new Walk(LocalDateTime.now(), savedLocation));
+        DogReport report = new DogReport(savedDog, walk, "Pulled on the lead.");
+
+        Dog updated = dogService.addReportToDog(savedDog.getId(), report);
+
+        assertThat(updated.getDogReports())
+                .extracting(DogReport::getNotes)
+                .contains("Pulled on the lead.");
+
+        assertThat(report.getWalk()).isEqualTo(walk);
+    }
+
 }

@@ -2,27 +2,15 @@ package com.ph.walkBuddy.model;
 
 import com.ph.walkBuddy.enums.RatingLevel;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class DogRating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Enumerated(EnumType.STRING)
-    private RatingLevel rating;
-
-
-    private LocalDateTime ratedAt;
 
     @ManyToOne
     @JoinColumn(name = "dog_id")
@@ -31,4 +19,51 @@ public class DogRating {
     @ManyToOne
     @JoinColumn(name = "walk_id")
     private Walk walk;
+
+    @Enumerated(EnumType.STRING)
+    private RatingLevel rating;
+
+    private LocalDateTime ratedAt;
+
+    public DogRating(){};
+
+    public DogRating(Dog dog, Walk walk, RatingLevel rating) {
+        this.dog = dog;
+        this.walk = walk;
+        this.rating = rating;
+        this.ratedAt = LocalDateTime.now();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public Dog getDog() {
+        return dog;
+    }
+
+    public Walk getWalk() {
+        return walk;
+    }
+
+    public RatingLevel getRating() {
+        return rating;
+    }
+
+    public LocalDateTime getRatedAt() {
+        return ratedAt;
+    }
+
+    public void setDog(Dog dog) {
+        this.dog = dog;
+    }
+
+    public void setWalk(Walk walk) {
+        this.walk = walk;
+    }
+
+    public void setRating(RatingLevel rating) {
+        this.rating = rating;
+    }
 }
+

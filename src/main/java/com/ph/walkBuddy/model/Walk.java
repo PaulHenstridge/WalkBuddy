@@ -33,6 +33,9 @@ public class Walk {
         @OneToOne(mappedBy = "walk", cascade = CascadeType.ALL)
         private WalkReport report;
 
+        private boolean complete = false;
+
+
 
         public Walk() {}
 
@@ -86,6 +89,15 @@ public class Walk {
         public void setReport(WalkReport report) {
                 this.report = report;
         }
+
+        public boolean isComplete() {
+                return complete;
+        }
+
+        public void setComplete(boolean complete) {
+                this.complete = complete;
+        }
+
 
         @Override
         public String toString() {

@@ -1,6 +1,8 @@
 package com.ph.walkBuddy.service;
 
 import com.ph.walkBuddy.model.Dog;
+import com.ph.walkBuddy.model.DogRating;
+import com.ph.walkBuddy.model.DogReport;
 import com.ph.walkBuddy.repository.DogRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,5 +54,21 @@ public class DogService {
         }
         dogRepository.deleteById(id);
     }
+
+    public Dog addRatingToDog(Long dogId, DogRating rating) {
+        Dog dog = getDogById(dogId);
+        rating.setDog(dog);
+        dog.getDogRatings().add(rating);
+        return dogRepository.save(dog);
+    }
+
+    public Dog addReportToDog(Long dogId, DogReport report) {
+        Dog dog = getDogById(dogId);
+        report.setDog(dog);
+        dog.getDogReports().add(report);
+        return dogRepository.save(dog);
+    }
+
+
 }
 
