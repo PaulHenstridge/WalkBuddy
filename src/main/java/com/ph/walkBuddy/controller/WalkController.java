@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/walks")
+@CrossOrigin(origins = "http://localhost:3000")
 public class WalkController {
 
     private final WalkService walkService;

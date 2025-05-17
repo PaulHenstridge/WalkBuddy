@@ -9,6 +9,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/dogs")
+@CrossOrigin(origins = "http://localhost:3000")
 public class DogController {
 
     private final DogService dogService;
