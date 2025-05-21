@@ -1,5 +1,6 @@
 package com.ph.walkBuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class Owner {
         private ContactDetails contactDetails;
 
         @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+        @JsonManagedReference
         private List<Dog> dogs = new ArrayList<>();
 
         private String notes;

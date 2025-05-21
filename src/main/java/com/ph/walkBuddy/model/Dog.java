@@ -1,5 +1,6 @@
 package com.ph.walkBuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class Dog {
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
+    @JsonBackReference
     private Owner owner;
 
     @ManyToMany(mappedBy = "dogs")
