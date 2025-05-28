@@ -1,5 +1,6 @@
 package com.ph.walkBuddy.controller;
 
+import com.ph.walkBuddy.dto.NewDogRequest;
 import com.ph.walkBuddy.model.Dog;
 import com.ph.walkBuddy.service.DogService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ public class DogController {
 
     // POST /dogs
     @PostMapping
-    public Dog createDog(@RequestBody Dog dog) {
+    public Dog createDog(@RequestBody NewDogRequest dog) {
         return dogService.createDog(dog);
     }
 

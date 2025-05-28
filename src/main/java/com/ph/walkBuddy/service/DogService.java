@@ -1,12 +1,17 @@
 package com.ph.walkBuddy.service;
 
+import com.ph.walkBuddy.dto.NewDogRequest;
 import com.ph.walkBuddy.model.Dog;
 import com.ph.walkBuddy.model.DogRating;
 import com.ph.walkBuddy.model.DogReport;
+import com.ph.walkBuddy.model.Owner;
 import com.ph.walkBuddy.repository.DogRepository;
+import com.ph.walkBuddy.repository.OwnerRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -14,10 +19,13 @@ import java.util.List;
 public class DogService {
 
     private final DogRepository dogRepository;
+    private final OwnerRepository ownerRepository;
 
     @Autowired
-    public DogService(DogRepository dogRepository) {
+    public DogService(DogRepository dogRepository, OwnerRepository ownerRepository) {
+
         this.dogRepository = dogRepository;
+        this.ownerRepository = ownerRepository;
     }
 
     public List<Dog> getAllDogs() {
@@ -33,7 +41,20 @@ public class DogService {
         return dogRepository.findByOwnerId(ownerId);
     }
 
-    public Dog createDog(Dog dog) {
+    public Dog createDog(NewDogRequest req) {
+        // 1) Look up the Owner by ID
+        Owner owner = ownerRepository.findById(req.getOwnerId())
+                .orElseThrow(() ->
+                        new ResponseStatusException(HttpStatus.NOT_FOUND, "Owner not found"));
+
+        // 2) Create and populate Dog entity
+        Dog dog = new Dog();
+        dog.setName(req.getName());
+        dog.setBreed(req.getBreed());
+        dog.setDescription(req.getDescription());
+        dog.setNotes(req.getNotes());
+        dog.setOwner(owner);
+
         return dogRepository.save(dog);
     }
 

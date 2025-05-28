@@ -1,6 +1,8 @@
 package com.ph.walkBuddy.controller;
 
 
+import com.ph.walkBuddy.dto.NewOwnerRequest;
+import com.ph.walkBuddy.dto.OwnerDTO;
 import com.ph.walkBuddy.model.Dog;
 import com.ph.walkBuddy.model.Owner;
 import com.ph.walkBuddy.service.OwnerService;
@@ -23,23 +25,23 @@ public class OwnerController {
 
     // GET /owners - retrieve all
     @GetMapping
-    public List<Owner> getAllOwners() {
+    public List<OwnerDTO> getAllOwners() {
         return ownerService.getAllOwners();
     }
 
     // GET /owners/{id} - retrieve one
     @GetMapping("/{id}")
-    public Owner getOwnerById(@PathVariable Long id) {
+    public OwnerDTO getOwnerById(@PathVariable Long id) {
         return ownerService.getOwnerById(id);
     }
 
     // POST /owners - create new
     @PostMapping
-    public Owner createOwner(@RequestBody Owner owner) {
-        return ownerService.createOwner(owner);
+    public OwnerDTO createOwner(@RequestBody NewOwnerRequest req) {
+        return ownerService.createOwner(req);
     }
 
-    // PUT /owners/{id} - update
+    // PUT /owners/{id} - update      // TODO - convert to DTO
     @PutMapping("/{id}")
     public Owner updateOwner(@PathVariable Long id, @RequestBody Owner updatedOwner) {
         return ownerService.updateOwner(id, updatedOwner);

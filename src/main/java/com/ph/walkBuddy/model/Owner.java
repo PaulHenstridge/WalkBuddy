@@ -1,6 +1,8 @@
 package com.ph.walkBuddy.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -8,6 +10,10 @@ import java.util.List;
 
 
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id"
+)
 public class Owner {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +24,7 @@ public class Owner {
         private ContactDetails contactDetails;
 
         @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
-        @JsonManagedReference
+
         private List<Dog> dogs = new ArrayList<>();
 
         private String notes;
