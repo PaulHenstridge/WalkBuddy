@@ -43,7 +43,7 @@ public class OwnerController {
 
     // PUT /owners/{id} - update      // TODO - convert to DTO
     @PutMapping("/{id}")
-    public Owner updateOwner(@PathVariable Long id, @RequestBody Owner updatedOwner) {
+    public OwnerDTO updateOwner(@PathVariable Long id, @RequestBody OwnerDTO updatedOwner) {
         return ownerService.updateOwner(id, updatedOwner);
     }
 
@@ -54,15 +54,15 @@ public class OwnerController {
     }
 
     // Add a dog
-    @PostMapping("/owners/{ownerId}/dogs")
-    public Owner addDog(@PathVariable Long ownerId, @RequestBody Dog newDog) {
-        return ownerService.addDogToOwner(ownerId, newDog);
-    }
+//    @PostMapping("/owners/{ownerId}/dogs")
+//    public Owner addDog(@PathVariable Long ownerId, @RequestBody Dog newDog) {
+//        return ownerService.addDogToOwner(ownerId, newDog);
+//    }
 
     // Remove a dog
-    @DeleteMapping("/owners/{ownerId}/dogs/{dogId}")
-    public Owner removeDog(@PathVariable Long ownerId, @PathVariable Long dogId) {
-        return ownerService.removeDogFromOwner(ownerId, dogId);
-    }
+//    @DeleteMapping("/owners/{ownerId}/dogs/{dogId}")
+//    public Owner removeDog(@PathVariable Long ownerId, @PathVariable Long dogId) {
+//        return ownerService.removeDogFromOwner(ownerId, dogId);
+//    }
 
 }

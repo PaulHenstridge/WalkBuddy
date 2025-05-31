@@ -7,7 +7,7 @@ import java.util.List;
 public class OwnerDTO {
     private Long id;
     private String name;
-    private ContactDetails contactDetails;  // your embeddable
+    private ContactDetails contactDetails;
     private List<DogDTO> dogs;
     private String notes;
 
