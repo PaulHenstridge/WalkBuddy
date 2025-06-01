@@ -1,5 +1,7 @@
 package com.ph.walkBuddy.service;
 
+import com.ph.walkBuddy.dto.NewWalkRequest;
+import com.ph.walkBuddy.dto.WalkDTO;
 import com.ph.walkBuddy.model.*;
 import com.ph.walkBuddy.repository.WalkRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -8,19 +10,24 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WalkService {
 
     private final WalkRepository walkRepository;
+    private final DogService dogService;
 
     @Autowired
-    public WalkService(WalkRepository walkRepository) {
+    public WalkService(WalkRepository walkRepository, DogService dogService) {
         this.walkRepository = walkRepository;
+        this.dogService = dogService;
+
     }
 
-    public Walk createWalk(Walk walk) {
-        return walkRepository.save(walk);
+    public WalkDTO createWalk(NewWalkRequest req) {
+
+        return walkRepository.save(req);
     }
 
     public Walk getWalkById(Long id) {
@@ -82,5 +89,22 @@ public class WalkService {
         Walk walk = getWalkById(walkId);
         walk.setComplete(true);
         return walkRepository.save(walk);
+    }
+
+    private WalkDTO toWalkDTO(Walk w) {
+        WalkDTO dto = new WalkDTO();
+        dto.setId(w.getId());
+        dto.setDateTime(w.getDateTime());
+        dto.setLocation(w.getLocation());
+        dto.setDogs(w.getDogs().stream()
+                .map(dogService::toDogDTO)
+                .collect(Collectors.toList()));
+
+        return dto;
+    }
+
+    private Dog fetchDogEntity(Long id){
+        return dogRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Dog not found with id: " + id));
     }
 }

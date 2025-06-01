@@ -1,5 +1,6 @@
 package com.ph.walkBuddy.controller;
 
+import com.ph.walkBuddy.dto.NewWalkRequest;
 import com.ph.walkBuddy.model.Dog;
 import com.ph.walkBuddy.model.Walk;
 import com.ph.walkBuddy.model.WalkRating;
@@ -24,7 +25,7 @@ public class WalkController {
     }
 
     @PostMapping
-    public Walk createWalk(@RequestBody Walk walk) {
+    public Walk createWalk(@RequestBody NewWalkRequest walk) {
         return walkService.createWalk(walk);
     }
 

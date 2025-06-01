@@ -105,7 +105,7 @@ public class DogService {
         return dogRepository.save(dog);
     }
 
-    private DogDTO toDogDTO(Dog d) {
+    public DogDTO toDogDTO(Dog d) {
         DogDTO dto = new DogDTO();
         dto.setId(d.getId());
         dto.setName(d.getName());
