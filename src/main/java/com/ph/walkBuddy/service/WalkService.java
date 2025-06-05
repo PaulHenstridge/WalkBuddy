@@ -3,10 +3,15 @@ package com.ph.walkBuddy.service;
 import com.ph.walkBuddy.dto.NewWalkRequest;
 import com.ph.walkBuddy.dto.WalkDTO;
 import com.ph.walkBuddy.model.*;
+import com.ph.walkBuddy.repository.DogRepository;
+import com.ph.walkBuddy.repository.LocationRepository;
 import com.ph.walkBuddy.repository.WalkRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,27 +21,58 @@ import java.util.stream.Collectors;
 public class WalkService {
 
     private final WalkRepository walkRepository;
+    private final LocationRepository locationRepository;
+    private final DogRepository dogRepository;
+
+    // TODO - move toDogDTO etc to a separate mapper file, so not bringing in whole dogService.  repeat for Dog, owner.
     private final DogService dogService;
 
     @Autowired
-    public WalkService(WalkRepository walkRepository, DogService dogService) {
+    public WalkService(WalkRepository walkRepository, LocationRepository locationRepository, DogRepository dogRepository, DogService dogService) {
         this.walkRepository = walkRepository;
         this.dogService = dogService;
+        this.locationRepository = locationRepository;
+        this.dogRepository = dogRepository;
+
 
     }
 
     public WalkDTO createWalk(NewWalkRequest req) {
+        // 1) Look up related entities first:
+        Location loc = locationRepository.findById(req.getLocationId())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Location not found"));
 
-        return walkRepository.save(req);
+        List<Dog> dogs = dogRepository.findAllById(req.getDogIds());
+        if (dogs.size() != req.getDogIds().size()) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND, "One or more dogs not found");
+        }
+
+        // 2) Build a new Walk entity from the request:
+        Walk w = new Walk();
+        w.setDateTime(req.getDateTime());
+        w.setLocation(loc);
+        w.setDogs(dogs);
+
+        // 3) Save the entity (now “w” is a managed Walk with an ID assigned):
+        Walk saved = walkRepository.save(w);
+
+        // 4) Convert saved entity to DTO and return:
+        return toWalkDTO(saved);
     }
 
-    public Walk getWalkById(Long id) {
-        return walkRepository.findById(id)
+
+    public WalkDTO getWalkById(Long id) {
+        Walk saved = walkRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Walk not found with id: " + id));
+        return toWalkDTO(saved);
     }
 
-    public List<Walk> getAllWalks() {
-        return walkRepository.findAll();
+    public List<WalkDTO> getAllWalks() {
+        return walkRepository.findAll().stream()
+                .map(this::toWalkDTO)
+                .collect(Collectors.toList());
     }
 
     public void deleteWalk(Long id) {
@@ -46,49 +82,58 @@ public class WalkService {
         walkRepository.deleteById(id);
     }
 
-    public Walk addDogToWalk(Long walkId, Dog dog) {
-        Walk walk = getWalkById(walkId);
+    public WalkDTO addDogToWalk(Long walkId, Long dogId ) {
+        Walk walk = fetchWalkEntity(walkId);
+        Dog dog = dogService.fetchDogEntity(dogId);
         if (walk.isComplete()) {
             throw new IllegalStateException("Cannot add dogs to a completed walk");
         }
         walk.getDogs().add(dog);
-        return walkRepository.save(walk);
+        Walk saved = walkRepository.save(walk);
+        return toWalkDTO(saved);
     }
 
-    public Walk updateWalkDateTime(Long walkId, LocalDateTime newDateTime) {
-        Walk walk = getWalkById(walkId);
+    public WalkDTO updateWalkDateTime(Long walkId, LocalDateTime newDateTime) {
+        Walk walk = fetchWalkEntity(walkId);
         if (walk.isComplete()) {
             throw new IllegalStateException("Cannot update date/time of a completed walk");
         }
         walk.setDateTime(newDateTime);
-        return walkRepository.save(walk);
+        Walk saved = walkRepository.save(walk);
+
+        return toWalkDTO(saved);
     }
 
-    public Walk addRatingToWalk(Long walkId, WalkRating rating) {
-        Walk walk = getWalkById(walkId);
+    public WalkDTO addRatingToWalk(Long walkId, WalkRating rating) {
+        Walk walk = fetchWalkEntity(walkId);
         if (!walk.isComplete()) {
             throw new IllegalStateException("Cannot rate a walk that is not completed");
         }
         rating.setWalk(walk);
         walk.setRating(rating);
-        return walkRepository.save(walk);
+        Walk saved = walkRepository.save(walk);
+
+        return toWalkDTO(saved);
     }
 
-    public Walk addReportToWalk(Long walkId, WalkReport report) {
-        Walk walk = getWalkById(walkId);
+    public WalkDTO addReportToWalk(Long walkId, WalkReport report) {
+        Walk walk = fetchWalkEntity(walkId);
         if (!walk.isComplete()) {
             throw new IllegalStateException("Cannot add a report to an incomplete walk");
         }
         report.setWalk(walk);
         walk.setReport(report);
-        return walkRepository.save(walk);
+        Walk saved = walkRepository.save(walk);
+
+        return toWalkDTO(saved);
     }
 
 
-    public Walk markWalkAsComplete(Long walkId) {
-        Walk walk = getWalkById(walkId);
+    public WalkDTO markWalkAsComplete(Long walkId) {
+        Walk walk = fetchWalkEntity(walkId);
         walk.setComplete(true);
-        return walkRepository.save(walk);
+        Walk saved = walkRepository.save(walk);
+        return toWalkDTO(saved);
     }
 
     private WalkDTO toWalkDTO(Walk w) {
@@ -103,8 +148,8 @@ public class WalkService {
         return dto;
     }
 
-    private Dog fetchDogEntity(Long id){
-        return dogRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Dog not found with id: " + id));
+    private Walk fetchWalkEntity(Long id){
+        return walkRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Walk not found with id: " + id));
     }
 }

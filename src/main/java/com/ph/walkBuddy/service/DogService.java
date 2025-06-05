@@ -117,7 +117,7 @@ public class DogService {
         return dto;
     }
 
-    private Dog fetchDogEntity(Long id){
+    public Dog fetchDogEntity(Long id){
         return dogRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Dog not found with id: " + id));
     }

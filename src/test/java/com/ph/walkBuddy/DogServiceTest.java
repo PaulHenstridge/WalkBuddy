@@ -1,5 +1,6 @@
 package com.ph.walkBuddy;
 
+import com.ph.walkBuddy.dto.DogDTO;
 import com.ph.walkBuddy.dto.NewDogRequest;
 import com.ph.walkBuddy.enums.RatingLevel;
 import com.ph.walkBuddy.model.*;
@@ -52,7 +53,7 @@ public class DogServiceTest {
 
         NewDogRequest newDog = new NewDogRequest("Fido", "Labrador", "Friendly dog", "Loves water", savedOwner.getId());
 
-        Dog saved = dogService.createDog(newDog);
+        DogDTO saved = dogService.createDog(newDog);
 
         assertThat(saved.getId()).isNotNull();
         assertThat(saved.getName()).isEqualTo("Fido");
@@ -66,7 +67,7 @@ public class DogServiceTest {
         dogRepository.save(d1);
         dogRepository.save(d2);
 
-        List<Dog> dogs = dogService.getAllDogs();
+        List<DogDTO> dogs = dogService.getAllDogs();
 
         assertThat(dogs).hasSize(2);
     }
@@ -76,7 +77,7 @@ public class DogServiceTest {
         Dog dog = new Dog("Max", "Terrier", "Energetic", "Chases cats", savedOwner);
         Dog saved = dogRepository.save(dog);
 
-        Dog found = dogService.getDogById(saved.getId());
+        DogDTO found = dogService.getDogById(saved.getId());
 
         assertThat(found).isNotNull();
         assertThat(found.getName()).isEqualTo("Max");

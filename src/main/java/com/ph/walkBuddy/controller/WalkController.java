@@ -1,6 +1,7 @@
 package com.ph.walkBuddy.controller;
 
 import com.ph.walkBuddy.dto.NewWalkRequest;
+import com.ph.walkBuddy.dto.WalkDTO;
 import com.ph.walkBuddy.model.Dog;
 import com.ph.walkBuddy.model.Walk;
 import com.ph.walkBuddy.model.WalkRating;
@@ -25,17 +26,17 @@ public class WalkController {
     }
 
     @PostMapping
-    public Walk createWalk(@RequestBody NewWalkRequest walk) {
+    public WalkDTO createWalk(@RequestBody NewWalkRequest walk) {
         return walkService.createWalk(walk);
     }
 
     @GetMapping("/{id}")
-    public Walk getWalkById(@PathVariable Long id) {
+    public WalkDTO getWalkById(@PathVariable Long id) {
         return walkService.getWalkById(id);
     }
 
     @GetMapping
-    public List<Walk> getAllWalks() {
+    public List<WalkDTO> getAllWalks() {
         return walkService.getAllWalks();
     }
 
@@ -45,27 +46,27 @@ public class WalkController {
     }
 
     @PostMapping("/{walkId}/dogs")
-    public Walk addDogToWalk(@PathVariable Long walkId, @RequestBody Dog dog) {
-        return walkService.addDogToWalk(walkId, dog);
+    public WalkDTO addDogToWalk(@PathVariable Long walkId, @RequestBody Dog dog) {
+        return walkService.addDogToWalk(walkId, dog.getId());
     }
 
     @PatchMapping("/{walkId}/date-time")
-    public Walk updateWalkDateTime(@PathVariable Long walkId, @RequestBody LocalDateTime newDateTime) {
+    public WalkDTO updateWalkDateTime(@PathVariable Long walkId, @RequestBody LocalDateTime newDateTime) {
         return walkService.updateWalkDateTime(walkId, newDateTime);
     }
 
     @PostMapping("/{walkId}/rating")
-    public Walk addRatingToWalk(@PathVariable Long walkId, @RequestBody WalkRating rating) {
+    public WalkDTO addRatingToWalk(@PathVariable Long walkId, @RequestBody WalkRating rating) {
         return walkService.addRatingToWalk(walkId, rating);
     }
 
     @PostMapping("/{walkId}/report")
-    public Walk addReportToWalk(@PathVariable Long walkId, @RequestBody WalkReport report) {
+    public WalkDTO addReportToWalk(@PathVariable Long walkId, @RequestBody WalkReport report) {
         return walkService.addReportToWalk(walkId, report);
     }
 
     @PatchMapping("/{walkId}/complete")
-    public Walk markWalkAsComplete(@PathVariable Long walkId) {
+    public WalkDTO markWalkAsComplete(@PathVariable Long walkId) {
         return walkService.markWalkAsComplete(walkId);
     }
 
