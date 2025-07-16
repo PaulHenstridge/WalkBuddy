@@ -1,13 +1,17 @@
 package com.ph.walkBuddy.dto;
 
 
+import java.time.LocalDate;
+
 public class DogDTO {
     private Long id;
     private String name;
     private String breed;
+    private LocalDate dateOfBirth;
     private String description;
     private String notes;
     private OwnerSummary owner;
+
 
     public DogDTO() {}
 
@@ -53,4 +57,12 @@ public class DogDTO {
     }
 
     public void setOwner(OwnerSummary owner) { this.owner = owner; }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 }

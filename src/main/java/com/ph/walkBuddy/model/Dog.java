@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +23,7 @@ public class Dog {
     private String name;
     private String breed;
     private String description;
+    private LocalDate dateOfBirth;
 
     @ManyToOne
     @JoinColumn(name = "owner_id", nullable = false)
@@ -41,10 +43,11 @@ public class Dog {
 
     public Dog() {}
 
-    public Dog(String name, String breed, String description, String notes, Owner owner) {
+    public Dog(String name, String breed, String description, LocalDate dateOfBirth, String notes, Owner owner) {
         this.name = name;
         this.breed = breed;
         this.description = description;
+        this.dateOfBirth = dateOfBirth;
         this.notes = notes;
         this.owner = owner;
     }
@@ -117,6 +120,14 @@ public class Dog {
 
     public void setNotes(String notes) {
         this.notes = notes;
+    }
+
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
     }
 
     @Override

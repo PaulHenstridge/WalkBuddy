@@ -63,6 +63,7 @@ public class DogService {
         dog.setName(req.getName());
         dog.setBreed(req.getBreed());
         dog.setDescription(req.getDescription());
+        dog.setDateOfBirth(req.getDateOfBirth());
         dog.setNotes(req.getNotes());
         dog.setOwner(owner);
 
@@ -111,6 +112,7 @@ public class DogService {
         dto.setName(d.getName());
         dto.setBreed(d.getBreed());
         dto.setDescription(d.getDescription());
+        dto.setDateOfBirth(d.getDateOfBirth());
         dto.setNotes(d.getNotes());
         dto.setOwner(new OwnerSummary(
                 d.getOwner().getId(), d.getOwner().getName()));
