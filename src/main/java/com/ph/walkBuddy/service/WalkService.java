@@ -116,11 +116,13 @@ public class WalkService {
         return toWalkDTO(saved);
     }
 
-    public WalkDTO addReportToWalk(Long walkId, WalkReport report) {
+    public WalkDTO addReportToWalk(Long walkId, String reportString) {
         Walk walk = fetchWalkEntity(walkId);
         if (!walk.isComplete()) {
             throw new IllegalStateException("Cannot add a report to an incomplete walk");
         }
+        WalkReport report = new WalkReport(walk, reportString);
+
         report.setWalk(walk);
         walk.setReport(report);
         Walk saved = walkRepository.save(walk);
@@ -133,6 +135,7 @@ public class WalkService {
         Walk walk = fetchWalkEntity(walkId);
         walk.setComplete(true);
         Walk saved = walkRepository.save(walk);
+        System.out.println("✅ Walk complete status after save: " + saved.isComplete());
         return toWalkDTO(saved);
     }
 
@@ -144,6 +147,8 @@ public class WalkService {
         dto.setDogs(w.getDogs().stream()
                 .map(dogService::toDogDTO)
                 .collect(Collectors.toList()));
+        dto.setComplete(w.isComplete());
+        dto.setReport(w.getReport());
 
         return dto;
     }

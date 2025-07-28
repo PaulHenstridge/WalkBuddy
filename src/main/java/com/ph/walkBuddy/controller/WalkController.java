@@ -61,8 +61,8 @@ public class WalkController {
     }
 
     @PostMapping("/{walkId}/report")
-    public WalkDTO addReportToWalk(@PathVariable Long walkId, @RequestBody WalkReport report) {
-        return walkService.addReportToWalk(walkId, report);
+    public WalkDTO addReportToWalk(@PathVariable Long walkId, @RequestBody String reportString) {
+        return walkService.addReportToWalk(walkId, reportString);
     }
 
     @PatchMapping("/{walkId}/complete")

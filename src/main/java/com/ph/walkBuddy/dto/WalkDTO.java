@@ -1,6 +1,7 @@
 package com.ph.walkBuddy.dto;
 
 import com.ph.walkBuddy.model.Location;
+import com.ph.walkBuddy.model.WalkReport;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -12,6 +13,7 @@ public class WalkDTO {
 
     private List<DogDTO> dogs;
     private boolean complete;
+    private WalkReport report;
 
     public Long getId() {
         return id;
@@ -33,6 +35,10 @@ public class WalkDTO {
         return complete;
     }
 
+    public WalkReport getReport() {
+        return report;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -51,5 +57,9 @@ public class WalkDTO {
 
     public void setComplete(boolean complete) {
         this.complete = complete;
+    }
+
+    public void setReport(WalkReport report) {
+        this.report = report;
     }
 }
