@@ -49,16 +49,16 @@ public class WalkService {
                     HttpStatus.NOT_FOUND, "One or more dogs not found");
         }
 
-        // 2) Build a new Walk entity from the request:
+        // 2) Build a new Walk entity from the request
         Walk w = new Walk();
         w.setDateTime(req.getDateTime());
         w.setLocation(loc);
         w.setDogs(dogs);
 
-        // 3) Save the entity (now “w” is a managed Walk with an ID assigned):
+        // 3) Save the entity
         Walk saved = walkRepository.save(w);
 
-        // 4) Convert saved entity to DTO and return:
+        // 4) Convert saved entity to DTO and return
         return toWalkDTO(saved);
     }
 
@@ -140,17 +140,25 @@ public class WalkService {
     }
 
     private WalkDTO toWalkDTO(Walk w) {
-        WalkDTO dto = new WalkDTO();
-        dto.setId(w.getId());
-        dto.setDateTime(w.getDateTime());
-        dto.setLocation(w.getLocation());
-        dto.setDogs(w.getDogs().stream()
-                .map(dogService::toDogDTO)
-                .collect(Collectors.toList()));
-        dto.setComplete(w.isComplete());
-        dto.setReport(w.getReport());
 
-        return dto;
+        Long locationId = (w.getLocation() != null) ? w.getLocation().getId() : null;
+        String locationName = (w.getLocation() != null) ? w.getLocation().getName() : null;
+        String report   = (w.getReport() != null) ? w.getReport().getNotes()   : null;
+
+        var dogs = w.getDogs().stream()
+                .map(dogService::toDogDTO)
+                .toList();
+
+
+        return new WalkDTO(
+                w.getId(),
+                locationId,
+                locationName,
+                w.getDateTime(),
+                dogs,
+                w.isComplete(),
+                report
+        );
     }
 
     private Walk fetchWalkEntity(Long id){

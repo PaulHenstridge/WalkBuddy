@@ -8,19 +8,38 @@ import java.util.List;
 
 public class WalkDTO {
     private Long id;
-    private Location location;
+    private Long locationId;
+    private String locationName;
     private LocalDateTime dateTime;
 
     private List<DogDTO> dogs;
     private boolean complete;
-    private WalkReport report;
+    private String report;
+
+    public WalkDTO() {}
+
+    public WalkDTO(Long id, Long locationId, String locationName,LocalDateTime dateTime,
+                   List<DogDTO> dogs, boolean complete, String report) {
+        this.id = id;
+
+        this.locationId = locationId;
+        this.locationName = locationName;
+        this.dateTime = dateTime;
+        this.dogs = dogs;
+        this.complete = complete;
+        this.report = report;
+    }
 
     public Long getId() {
         return id;
     }
 
-    public Location getLocation() {
-        return location;
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public String getLocationName() {
+        return locationName;
     }
 
     public LocalDateTime getDateTime() {
@@ -35,7 +54,7 @@ public class WalkDTO {
         return complete;
     }
 
-    public WalkReport getReport() {
+    public String getReport() {
         return report;
     }
 
@@ -43,8 +62,12 @@ public class WalkDTO {
         this.id = id;
     }
 
-    public void setLocation(Location location) {
-        this.location = location;
+    public void setLocation(Long locationId) {
+        this.locationId = locationId;
+    }
+
+    public void setLocationName(String locationName) {
+        this.locationName = locationName;
     }
 
     public void setDateTime(LocalDateTime dateTime) {
@@ -59,7 +82,7 @@ public class WalkDTO {
         this.complete = complete;
     }
 
-    public void setReport(WalkReport report) {
+    public void setReport(String report) {
         this.report = report;
     }
 }
