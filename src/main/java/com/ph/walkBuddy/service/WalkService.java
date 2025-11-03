@@ -2,6 +2,7 @@ package com.ph.walkBuddy.service;
 
 import com.ph.walkBuddy.dto.NewWalkRequest;
 import com.ph.walkBuddy.dto.WalkDTO;
+import com.ph.walkBuddy.enums.RatingLevel;
 import com.ph.walkBuddy.model.*;
 import com.ph.walkBuddy.repository.DogRepository;
 import com.ph.walkBuddy.repository.LocationRepository;
@@ -104,13 +105,12 @@ public class WalkService {
         return toWalkDTO(saved);
     }
 
-    public WalkDTO addRatingToWalk(Long walkId, WalkRating rating) {
+    public WalkDTO addRatingToWalk(Long walkId, RatingLevel rating) {
         Walk walk = fetchWalkEntity(walkId);
         if (!walk.isComplete()) {
             throw new IllegalStateException("Cannot rate a walk that is not completed");
         }
-        rating.setWalk(walk);
-        walk.setRating(rating);
+        walk.rate(rating);
         Walk saved = walkRepository.save(walk);
 
         return toWalkDTO(saved);

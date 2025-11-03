@@ -2,6 +2,7 @@ package com.ph.walkBuddy.controller;
 
 import com.ph.walkBuddy.dto.NewWalkRequest;
 import com.ph.walkBuddy.dto.WalkDTO;
+import com.ph.walkBuddy.enums.RatingLevel;
 import com.ph.walkBuddy.model.Dog;
 import com.ph.walkBuddy.model.Walk;
 import com.ph.walkBuddy.model.WalkRating;
@@ -56,7 +57,7 @@ public class WalkController {
     }
 
     @PostMapping("/{walkId}/rating")
-    public WalkDTO addRatingToWalk(@PathVariable Long walkId, @RequestBody WalkRating rating) {
+    public WalkDTO addRatingToWalk(@PathVariable Long walkId, @RequestBody RatingLevel rating) {
         return walkService.addRatingToWalk(walkId, rating);
     }
 

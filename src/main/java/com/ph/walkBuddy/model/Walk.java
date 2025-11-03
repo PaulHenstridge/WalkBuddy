@@ -1,5 +1,6 @@
 package com.ph.walkBuddy.model;
 
+import com.ph.walkBuddy.enums.RatingLevel;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -98,6 +99,13 @@ public class Walk {
                 this.complete = complete;
         }
 
+        public void rate(RatingLevel level) {
+                if (this.rating == null) {
+                        this.rating = new WalkRating(this, level);
+                } else {
+                        this.rating.setRating(level);
+                }
+        }
 
         @Override
         public String toString() {
