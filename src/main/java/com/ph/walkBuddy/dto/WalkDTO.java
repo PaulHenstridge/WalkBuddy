@@ -1,6 +1,8 @@
 package com.ph.walkBuddy.dto;
 
+import com.ph.walkBuddy.enums.RatingLevel;
 import com.ph.walkBuddy.model.Location;
+import com.ph.walkBuddy.model.WalkRating;
 import com.ph.walkBuddy.model.WalkReport;
 
 import java.time.LocalDateTime;
@@ -16,10 +18,12 @@ public class WalkDTO {
     private boolean complete;
     private String report;
 
+    private RatingLevel rating;
+
     public WalkDTO() {}
 
-    public WalkDTO(Long id, Long locationId, String locationName,LocalDateTime dateTime,
-                   List<DogDTO> dogs, boolean complete, String report) {
+    public WalkDTO(Long id, Long locationId, String locationName, LocalDateTime dateTime,
+                   List<DogDTO> dogs, boolean complete, String report, RatingLevel rating) {
         this.id = id;
 
         this.locationId = locationId;
@@ -28,6 +32,7 @@ public class WalkDTO {
         this.dogs = dogs;
         this.complete = complete;
         this.report = report;
+        this.rating = rating;
     }
 
     public Long getId() {
@@ -84,5 +89,13 @@ public class WalkDTO {
 
     public void setReport(String report) {
         this.report = report;
+    }
+
+    public RatingLevel getRating() {
+        return rating;
+    }
+
+    public void setRating(RatingLevel rating) {
+        this.rating = rating;
     }
 }

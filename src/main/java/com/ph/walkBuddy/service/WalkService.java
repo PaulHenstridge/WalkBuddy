@@ -144,6 +144,7 @@ public class WalkService {
         Long locationId = (w.getLocation() != null) ? w.getLocation().getId() : null;
         String locationName = (w.getLocation() != null) ? w.getLocation().getName() : null;
         String report   = (w.getReport() != null) ? w.getReport().getNotes()   : null;
+        RatingLevel rating   = (w.getRating() != null) ? w.getRating().getRating()   : null;
 
         var dogs = w.getDogs().stream()
                 .map(dogService::toDogDTO)
@@ -157,7 +158,8 @@ public class WalkService {
                 w.getDateTime(),
                 dogs,
                 w.isComplete(),
-                report
+                report,
+                rating
         );
     }
 

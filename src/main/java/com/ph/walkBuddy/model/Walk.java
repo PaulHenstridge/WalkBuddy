@@ -27,7 +27,7 @@ public class Walk {
         )
         private List<Dog> dogs = new ArrayList<>();
 
-        @OneToOne(mappedBy = "walk", cascade = CascadeType.ALL)
+        @OneToOne(mappedBy = "walk", cascade = CascadeType.ALL, orphanRemoval = true)
         private WalkRating rating;
 
 

@@ -12,8 +12,8 @@ public class WalkRating {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "walk_id", unique = true)
+    @OneToOne
+    @JoinColumn(name = "walk_id", nullable = false, unique = true)
     private Walk walk;
     @Enumerated(EnumType.STRING)
     private RatingLevel rating;
